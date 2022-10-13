@@ -1,0 +1,45 @@
+version: "3.0"
+
+rules:
+
+
+
+- rule: Activate know_grade_form when no other form is active
+  condition:
+  # this condition allows stories to handle form switching
+  - active_loop: null
+  steps:
+  - intent: salary_grade
+  - action: know_grade_form
+  - active_loop: know_grade_form
+
+  
+- rule: Submit know_grade_form 
+  condition:
+  - active_loop: know_grade_form
+  steps:
+  - action: know_grade_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_grade_salary
+
+- rule: Activate sum_salary_form when no other form is active
+  condition:
+  # this condition allows stories to handle form switching
+  - active_loop: null
+  steps:
+  - intent: calculate_salary
+  - action: sum_salary_form
+  - active_loop: sum_salary_form
+
+  
+- rule: Submit sum_salary_form 
+  condition:
+  - active_loop: sum_salary_form
+  steps:
+  - action: sum_salary_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_calculate_salary
